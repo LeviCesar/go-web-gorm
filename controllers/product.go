@@ -61,3 +61,46 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/product", http.StatusMovedPermanently)
 }
+
+func Edit(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		productId := r.URL.Query().Get("id")
+
+		productIdConverted, err := strconv.Atoi(productId)
+		if err != nil {
+			log.Println("Product id not defined", productIdConverted)
+		}
+
+		product := models.Get(uint(productIdConverted))
+
+		templateHtml.ExecuteTemplate(w, "Edit", product)
+	} else if r.Method == "POST" {
+		productId := r.FormValue("id")
+		name := r.FormValue("name")
+		price := r.FormValue("price")
+		description := r.FormValue("description")
+		quantity := r.FormValue("quantity")
+
+		productIdConverted, err := strconv.Atoi(productId)
+		if err != nil {
+			log.Println("Product id not defined", productIdConverted)
+		}
+
+		product := models.Get(uint(productIdConverted))
+
+		priceConverted, err := strconv.ParseFloat(price, 64)
+		if err != nil {
+			log.Println("Price Convert Error: ", err)
+		}
+
+		quantityConverted, err := strconv.Atoi(quantity)
+		if err != nil {
+			log.Println("Quantity Convert Error: ", err)
+		}
+
+		productEdit := models.Product{Name: name, Description: description, Price: priceConverted, Quantity: uint16(quantityConverted)}
+		product.Update(productEdit)
+
+		http.Redirect(w, r, "/product", http.StatusMovedPermanently)
+	}
+}

@@ -14,6 +14,7 @@ func main() {
 	http.HandleFunc("/product", controllers.Index)
 	http.HandleFunc("/product/new", controllers.New)
 	http.HandleFunc("/product/delete", controllers.Delete)
+	http.HandleFunc("/product/edit", controllers.Edit)
 	// End Routes
 
 	http.ListenAndServe(":7000", nil)

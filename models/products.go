@@ -49,12 +49,11 @@ func Get(id uint) Product {
 	return product
 }
 
-// func (product *Product) Update() {
-// 	db := Connect()
+func (product *Product) Update(productUpdate Product) {
+	db := Connect()
 
-// 	var model Product
-// 	result := db.Model(&model).Updates(product)
-// }
+	db.Model(&product).Updates(productUpdate)
+}
 
 func (product *Product) Delete() {
 	db := Connect()
