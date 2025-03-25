@@ -6,7 +6,7 @@ import (
 )
 
 type Product struct {
-	Id          uint `gorm:"primaryKey;default:auto_random()"`
+	Id          uint `gorm:"primaryKey"`
 	Name        string
 	Description string
 	Price       float64
@@ -14,7 +14,7 @@ type Product struct {
 }
 
 func Connect() (db *gorm.DB) {
-	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("example.db"), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -31,7 +31,7 @@ func (product *Product) Create() bool {
 	return result.RowsAffected == 1
 }
 
-func (product *Product) Read() []Product {
+func (product *Product) List() []Product {
 	db := Connect()
 
 	var productList []Product
@@ -40,9 +40,24 @@ func (product *Product) Read() []Product {
 	return productList
 }
 
+func Get(id uint) Product {
+	db := Connect()
+
+	var product Product
+	db.First(&product, "id = ?", id)
+
+	return product
+}
+
 // func (product *Product) Update() {
 // 	db := Connect()
 
 // 	var model Product
 // 	result := db.Model(&model).Updates(product)
 // }
+
+func (product *Product) Delete() {
+	db := Connect()
+
+	db.Delete(&product)
+}

@@ -3,22 +3,18 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"text/template"
 
-	"github.com/go-web/models"
+	"github.com/go-web/controllers"
 )
 
-var templateHtml = template.Must(template.ParseGlob("templates/*.html"))
-
 func main() {
-	fmt.Print("Running: http://localhost:7000")
+	fmt.Println("Running: http://localhost:7000")
 
-	http.HandleFunc("/", index)
+	// Routes
+	http.HandleFunc("/product", controllers.Index)
+	http.HandleFunc("/product/new", controllers.New)
+	http.HandleFunc("/product/delete", controllers.Delete)
+	// End Routes
+
 	http.ListenAndServe(":7000", nil)
-}
-
-func index(w http.ResponseWriter, r *http.Request) {
-	product := models.Product{}
-	productList := product.Read()
-	templateHtml.ExecuteTemplate(w, "Index", productList)
 }

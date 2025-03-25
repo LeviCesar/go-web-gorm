@@ -35,13 +35,16 @@
                             <td>{{ .Description }}</td>
                             <td>{{ .Price }}</td>
                             <td>{{ .Quantity }}</td>
+                            <td><a href="/product/delete?id={{ .Id }}" class="btn btn-danger">Deletar</a></td>
                         </tr>
                         {{ end }}
                     </tbody>
                 </table>
             </div>
         </section>
-
+        <div class="card-footer">
+            <a href="/product/new" class="btn btn-primary mb-2">Adicionar produto</a>
+        </div>
     </div>
 </body>
 
